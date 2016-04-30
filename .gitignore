@@ -22,4 +22,6 @@ config/secrets.yml
 # using .ruby-version
 .rvmrc
 
-
+# vim files
+*.swo
+*.swp
