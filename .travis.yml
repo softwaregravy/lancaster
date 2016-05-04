@@ -10,4 +10,6 @@ script:
   - bundle exec rake db:test:prepare
   - bundle exec rspec spec
 
-
+addons:
+  code_climate:
+    repo_token: 031c0280dc687b88251443471f36f1a5094d0f6098de2eabb9c1766857325086

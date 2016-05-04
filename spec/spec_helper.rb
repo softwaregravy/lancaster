@@ -16,6 +16,23 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+# Codeclimate setup instructions:
+# https://github.com/codeclimate/ruby-test-reporter
+require 'codeclimate-test-reporter'
+require 'simplecov'
+formatters =  [SimpleCov::Formatter::HTMLFormatter]
+if ENV['CODECLIMATE_REPO_TOKEN']
+  formatters << CodeClimate::TestReporter::Formatter
+  CodeClimate::TestReporter.start
+end
+
+# If I ever use Webmock, I will want to do this
+# WebMock.disable_net_connect!(allow: 'codeclimate.com')
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(formatters)
+SimpleCov.start 'rails'
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

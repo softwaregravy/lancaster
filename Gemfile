@@ -57,6 +57,11 @@ group :development do
   gem 'spring'
 end
 
+group :test do
+  gem 'simplecov'
+  gem 'codeclimate-test-reporter'
+end
+
 group :production do 
   gem 'rails_12factor'
 end
