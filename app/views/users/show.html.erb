@@ -10,5 +10,14 @@
   <%= @user.phone_number %>
 </p>
 
+<p>
+  <strong>Roles:</strong>
+  <% first_role = true %>
+  <% @user.roles.each do |role| %>
+    <%= ", " unless first_role%><%= role.name %>
+    <% first_role = false %>
+  <% end %>
+</p>
+
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
