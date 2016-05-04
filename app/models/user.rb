@@ -28,4 +28,16 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable
+
+  has_and_belongs_to_many :roles
+
+  before_validation :set_default_role
+
+  def role?(role = "")
+    roles.where(name: role.to_s.downcase).take.present?
+  end
+
+  def set_default_role
+    roles << Role.where(name: "client").take unless role? :client
+  end
 end
