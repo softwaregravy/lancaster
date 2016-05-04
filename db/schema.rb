@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20160504002617) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "roles_users", ["role_id", "user_id"], name: "index_roles_users_on_role_id_and_user_id", using: :btree
   add_index "roles_users", ["user_id", "role_id"], name: "index_roles_users_on_user_id_and_role_id", using: :btree
 
   create_table "users", force: :cascade do |t|
