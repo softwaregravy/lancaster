@@ -18,4 +18,4 @@ if true
   ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor)                                                                                                                                                                                                                                                                                                     
 end
 
-
+puts "SETUP EMAIL COMPLETE"
