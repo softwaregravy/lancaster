@@ -4,7 +4,7 @@ class PhoneNumberFormatter
       /\A\+1\d{10}\z/
     end
 
-    def formatter(phone_number)
+    def format(phone_number)
       ret_val = phone_number.to_s
       return ret_val if valid_format =~ ret_val
 
@@ -20,8 +20,14 @@ class PhoneNumberFormatter
       end
 
       return ret_val if valid_format =~ ret_val
-      raise ArgumentError, "unable to properly format phone number #{phone_number}"
-
+      return nil
     end
+
+    def format!(phone_number)
+      ret_val = format(phone_number)
+      raise ArgumentError, "unable to properly format phone number #{phone_number}" unless ret_val
+      ret_val
+    end
+
   end
 end

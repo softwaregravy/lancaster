@@ -5,7 +5,7 @@ gmail_settings = {
   port: 587,
   domain: 'gmail',
   user_name: 'john.development.test@gmail.com',
-  password: ENV['DEVELOPMENT_EMAIL_PASSWORD'],
+  password: ENV['EMAIL_PASSWORD'],
   authentication: 'plain',
   enable_starttls_auto: true
 }
