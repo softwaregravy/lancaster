@@ -17,5 +17,3 @@ if true
 # if Rails.env.development? || Rails.env.test?
   ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor)                                                                                                                                                                                                                                                                                                     
 end
-
-puts "SETUP EMAIL COMPLETE"
