@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
 
   before_validation :set_default_role
+  validate :validate_and_format_phone_number
 
   def role?(role = "")
     roles.where(name: role.to_s.downcase).take.present?
@@ -39,5 +40,16 @@ class User < ActiveRecord::Base
 
   def set_default_role
     roles << Role.where(name: "client").take unless role? :client
+  end
+
+  def validate_and_format_phone_number
+    if phone_number.present?
+      formatted_number = PhoneNumberFormatter.format(phone_number)
+      if formatted_number.present?
+        self.phone_number = formatted_number
+      else
+        errors[:phone_number] << "unable to parse phone number"
+      end
+    end
   end
 end

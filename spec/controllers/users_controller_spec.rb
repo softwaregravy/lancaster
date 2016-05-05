@@ -89,7 +89,7 @@ RSpec.describe UsersController, type: :controller do
       it "updates the requested user" do
         put :update, {:id => @user.to_param, :user => new_attributes}, valid_session
         @user.reload
-        expect(@user.phone_number).to eql(@new_number)
+        expect(@user.phone_number).to eql(PhoneNumberFormatter.format(@new_number))
       end
 
       it "assigns the requested user as @user" do
