@@ -25,5 +25,46 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  describe "#role?" do 
+    it "should return whether the role is assigned" do 
+      r1 = Role.create(name: "ABC")
+      r2 = Role.create(name: "XYZ")
+      r3 = Role.create(name: "NOT_ASSIGNED")
+      user = FactoryGirl.create(:user)
+      user.roles = [r1, r2]
+      # shouldn't be needed, but lets make sure nothing is cached
+      same_user = User.find(user.id)
+      same_user.role?("ABC").should == true
+      same_user.role?("XYZ").should ==  true
+      same_user.role?("NOT_ASSIGNED").should == false
+    end
+  end
+
+  describe "#set_default_role" do 
+    it "should default to client" do 
+      user = FactoryGirl.create(:user)
+      user.roles.size.should == 1
+      user.role?("client").should == true
+    end
+  end
+
+  describe "#validate phone number" do 
+    it "should be valid without a phone number" do 
+      FactoryGirl.build(:user, phone_number: nil).should be_valid
+    end
+    it "should format valid phone numbers" do 
+      ['+12223334444', '5554443333', '(222)555-5555'].each do |phone_number|
+        user = FactoryGirl.build(:user, phone_number: phone_number)
+        user.should be_valid
+        user.phone_number.should == PhoneNumberFormatter.format(phone_number)
+      end
+    end
+    it "should give an error on invalid phone numbers" do 
+      ['+122233444', '445554443333', '(2)555-5555'].each do |phone_number|
+        user = FactoryGirl.build(:user, phone_number: phone_number)
+        user.should_not be_valid
+      end
+    end
+  end
 end

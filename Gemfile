@@ -52,6 +52,7 @@ end
 group :test do
   gem 'simplecov'
   gem 'codeclimate-test-reporter'
+  gem 'shoulda'
 end
 
 group :production do 
