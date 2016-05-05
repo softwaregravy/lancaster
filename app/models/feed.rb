@@ -14,15 +14,17 @@ class Feed < ActiveRecord::Base
   validates :url, presence: true
 
   def fetch_and_parse
-    @cached_feed = Feedjira::Feed.fetch_and_parse url
+    Rails.cache.fetch('feed', expires_in: 900) do 
+      Feedjira::Feed.fetch_and_parse url
+    end
   end
 
   def latest_post
-    fetch_and_parse unless @cached_feed
-    @cached_feed.entries.first
+    fetch_and_parse.entries.first
   end
 
   def latest_title_and_link
-    [latest_post.title, latest_post.url]
+    post = latest_post
+    [post.title, post.url]
   end
 end
