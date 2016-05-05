@@ -26,6 +26,15 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
+  describe "valid factories" do
+    it { FactoryGirl.create(:user).should be_valid }
+    it "should generate a valid amin" do 
+      admin = FactoryGirl.create(:admin)
+      admin.should be_valid
+      admin.role?('admin').should == true
+    end
+  end
+
   describe "#role?" do 
     it "should return whether the role is assigned" do 
       r1 = Role.create(name: "ABC")
