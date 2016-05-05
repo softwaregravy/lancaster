@@ -60,6 +60,7 @@ GEM
     concurrent-ruby (1.0.1)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
+    dalli (2.7.6)
     debug_inspector (0.0.2)
     devise (4.1.0)
       bcrypt (~> 3.0)
@@ -238,6 +239,7 @@ DEPENDENCIES
   cancancan (~> 1.10)
   codeclimate-test-reporter
   coffee-rails (~> 4.1.0)
+  dalli
   devise
   factory_girl_rails
   faker

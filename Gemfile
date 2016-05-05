@@ -32,7 +32,11 @@ gem 'twilio-ruby', '~> 4.11.1'
 
 # Reading RSS
 gem 'feedjira'
-gem 'addressable'
+gem 'addressable' # url validation
+gem 'dalli' # cache 
+
+# Debugging and Tools
+gem 'awesome_print' # cause I'm a prima donna
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -41,8 +45,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'webmock'
-
-  gem 'awesome_print' # cause I'm a prima donna
 end
 
 group :development do
