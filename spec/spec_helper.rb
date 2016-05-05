@@ -17,6 +17,8 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+require 'webmock/rspec'
+
 # Codeclimate setup instructions:
 # https://github.com/codeclimate/ruby-test-reporter
 require 'codeclimate-test-reporter'
@@ -28,7 +30,7 @@ if ENV['CODECLIMATE_REPO_TOKEN']
 end
 
 # If I ever use Webmock, I will want to do this
-# WebMock.disable_net_connect!(allow: 'codeclimate.com')
+WebMock.disable_net_connect!(allow: 'codeclimate.com')
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(formatters)
 SimpleCov.start 'rails'
