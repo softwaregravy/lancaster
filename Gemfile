@@ -30,6 +30,10 @@ gem 'cancancan', '~> 1.10'
 # Twilio :)
 gem 'twilio-ruby', '~> 4.11.1'
 
+# Reading RSS
+gem 'feedjira'
+gem 'addressable'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

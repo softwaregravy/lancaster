@@ -21,3 +21,13 @@
 
 en:
   hello: "Hello world"
+  errors: &errors
+    messages:
+      bad_uri: is an invalid url
+      bad_protocol: must start with %{protocols}
+  activemodel:
+    errors:
+      <<: *errors
+  activerecord:
+    errors:
+      <<: *errors
