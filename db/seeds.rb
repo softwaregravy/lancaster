@@ -8,7 +8,7 @@
 admin = Role.find_or_create_by(name: "admin")
 Role.find_or_create_by(name: "client")
 
-unless Rails.env.production? 
+if Rails.env.development?
   john = User.find_or_create_by(email: "john@example.com") do |u|
     u.phone_number = "555-555-5555"
     u.password = "jpassword"

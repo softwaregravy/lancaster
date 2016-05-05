@@ -30,5 +30,11 @@ FactoryGirl.define do
     confirmed_at Date.today
     # don't use phone_number -- it has extensions
     phone_number { Faker::PhoneNumber.cell_phone }
+    factory :admin do 
+      after(:create) do |user, evaluator|
+        admin_role = Role.where(name: "admin").take
+        user.roles = [admin_role]
+      end
+    end
   end
 end
