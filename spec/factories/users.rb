@@ -28,7 +28,7 @@ FactoryGirl.define do
     password "password"
     password_confirmation "password"
     confirmed_at Date.today
-
-    phone_number "555-555-5555"
+    # don't use phone_number -- it has extensions
+    phone_number { Faker::PhoneNumber.cell_phone }
   end
 end
