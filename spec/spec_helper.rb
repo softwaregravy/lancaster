@@ -30,7 +30,7 @@ if ENV['CODECLIMATE_REPO_TOKEN']
 end
 
 # If I ever use Webmock, I will want to do this
-# WebMock.disable_net_connect!(allow: 'codeclimate.com')
+WebMock.disable_net_connect!(allow: 'codeclimate.com')
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(formatters)
 SimpleCov.start 'rails'
