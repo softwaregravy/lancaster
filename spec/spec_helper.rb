@@ -17,6 +17,8 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+require 'webmock/rspec'
+
 # Codeclimate setup instructions:
 # https://github.com/codeclimate/ruby-test-reporter
 require 'codeclimate-test-reporter'
