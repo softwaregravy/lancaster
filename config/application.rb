@@ -31,5 +31,10 @@ module Lancaster
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Fix double logging in console caused by rails_stdout_logging
+    console do
+      ActiveRecord::Base.logger = Rails.logger = Logger.new(STDOUT)
+    end
   end
 end

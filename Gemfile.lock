@@ -251,6 +251,7 @@ DEPENDENCIES
   rack-timeout
   rails (= 4.2.6)
   rails_12factor
+  rails_stdout_logging
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
