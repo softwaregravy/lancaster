@@ -30,6 +30,7 @@ class User < ActiveRecord::Base
          :confirmable
 
   has_and_belongs_to_many :roles
+  has_many :subscriptions
 
   before_validation :set_default_role
   validate :validate_and_format_phone_number

@@ -1,0 +1,26 @@
+<%= form_for(@subscription) do |f| %>
+  <% if @subscription.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@subscription.errors.count, "error") %> prohibited this subscription from being saved:</h2>
+
+      <ul>
+      <% @subscription.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if current_user.role?('admin') %>
+    <div class="field">
+      <%= f.label :user_id %><br>
+      <%= f.number_field :user_id %>
+    </div>
+  <% else %>
+    <%= f.hidden_field(:user_id, value: current_user.id) %>
+  <% end %>
+  <%= f.collection_select :feed_id, @feeds, :id, :name, {include_blank: true, disabled: lambda{|feed| @current_feeds.include? feed.id}} %>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
