@@ -8,6 +8,4 @@ Status" />](https://travis-ci.org/softwaregravy/lancaster)
 Climate](https://codeclimate.com/github/softwaregravy/lancaster/badges/gpa.svg)](https://codeclimate.com/github/softwaregravy/lancaster)
 [![Test Coverage](https://codeclimate.com/github/mbursi/iQuote/badges/coverage.svg)](https://codeclimate.com/github/softwaregravy/lancaster)
 
-As yet an unnamed product.
-
-V1 polls RSS feeds and sends text messages when new posts arrive.
+An as yet an unnamed, ill-defined product.
