@@ -7,6 +7,7 @@ class Ability
       can :manage, User, id: user.id
       can :create, User
       can :read, Feed
+      can :manage, Subscription, user_id: user.id
     end
     if user.role? :admin
       can :manage, :all
