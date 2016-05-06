@@ -6,7 +6,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def new
-    if current_user.role?('admin')
+    if current_user.admin?
       @current_feeds = []
     else
       @current_feeds = current_user.subscriptions.pluck(:feed_id)

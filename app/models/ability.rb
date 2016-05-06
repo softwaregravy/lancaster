@@ -9,7 +9,7 @@ class Ability
       can :read, Feed
       can :manage, Subscription, user_id: user.id
     end
-    if user.role? :admin
+    if user.admin?
       can :manage, :all
     end
 
