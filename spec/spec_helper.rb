@@ -1,4 +1,5 @@
 require 'webmock/rspec'
+require 'shoulda'
 
 # Codeclimate setup instructions:
 # https://github.com/codeclimate/ruby-test-reporter
