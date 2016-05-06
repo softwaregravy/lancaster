@@ -22,7 +22,7 @@ RSpec.describe Feed, type: :model do
   describe "#initialize" do 
     it "should initialize correctly" do 
       # no logic yet, just sanity test the class
-      FactoryGirl.create(:feed)
+      create(:feed)
     end
   end
 
