@@ -45,7 +45,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'webmock'
-
 end
 
 group :development do
@@ -61,7 +60,6 @@ end
 group :test do
   gem 'simplecov'
   gem 'codeclimate-test-reporter'
-  gem 'shoulda', require: false
 end
 
 group :production do 
