@@ -108,7 +108,7 @@ RSpec.describe UsersController, type: :controller do
       pnf.format(@user.phone_number).should == pnf.format(@original_number)
       pnf.format(@admin.phone_number).should == pnf.format(@original_number)
     end
-    let(:new_attributes) { {phone_number: @new_number} }
+    let(:new_attributes) { {phone_number: @new_number, notifications_enabled: true} }
     let(:invalid_attributes) { {phone_number: '345'} }
     context "as user" do 
       before { sign_in @user }
