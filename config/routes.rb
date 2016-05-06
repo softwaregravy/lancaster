@@ -3,9 +3,9 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'users#index'
 
-  resources :users
-  resources :feeds
-  resources :subscriptions
+  resources :users, only: [:index, :show, :edit, :update, :destroy]
+  resources :feeds 
+  resources :subscriptions, only: [:index, :new, :create, :destroy]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
