@@ -12,8 +12,12 @@
 require 'rails_helper'
 
 RSpec.describe Feed, type: :model do
-  it { should validate_presence_of :name }
-  it { should validate_presence_of :url }
+  describe "an empty feed" do 
+    subject { Feed.new }
+    before { subject.valid? }
+    it { subject.errors.include?(:name).should == true }
+    it { subject.errors.include?(:url).should == true }
+  end
   describe "#initialize" do 
     it "should initialize correctly" do 
       # no logic yet, just sanity test the class

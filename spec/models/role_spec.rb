@@ -11,11 +11,15 @@
 require 'rails_helper'
 
 RSpec.describe Role, type: :model do
+  describe "an empty role" do 
+    subject { Role.new }
+    before { subject.valid? }
+    it { subject.errors.include?(:name).should == true }
+  end
   describe "#initialization" do 
     it "should downcase names" do 
       r = Role.create(name: 'ROLE')
       expect(r.name).to eql('role')
     end
-    it { should validate_presence_of :name }
   end
 end

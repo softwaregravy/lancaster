@@ -60,11 +60,10 @@ end
 group :test do
   gem 'simplecov'
   gem 'codeclimate-test-reporter'
-  gem 'shoulda'
 end
 
 group :production do 
   gem 'rails_12factor'
 end
 
-ruby "2.3.0"
+ruby "2.3.1"
