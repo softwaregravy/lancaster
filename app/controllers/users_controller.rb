@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
     def set_user_id
       # in the case that #show is the root
-      params[:id] ||= current_user.id unless params.include? :id
+      params[:id] ||= current_user.id 
     end
 
 end
