@@ -60,3 +60,7 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, type: :controller
   config.include Devise::TestHelpers, type: :view
 end
+
+# Doing this last
+# https://github.com/rails/spring/issues/209
+require 'shoulda-matchers'

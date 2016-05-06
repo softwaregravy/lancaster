@@ -45,6 +45,8 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'webmock'
+  gem 'spring'
+  gem 'spring-commands-rspec'
 end
 
 group :development do
@@ -58,7 +60,7 @@ end
 group :test do
   gem 'simplecov'
   gem 'codeclimate-test-reporter'
-  gem 'shoulda'
+  gem 'shoulda-matchers', require: false
 end
 
 group :production do 
