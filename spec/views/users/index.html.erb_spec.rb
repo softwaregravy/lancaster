@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe "users/index", type: :view do
   before(:each) do
     assign(:users, [
-           @user1 = FactoryGirl.create(:user),
-           @user2 = FactoryGirl.create(:user)
+           @user1 = create(:user),
+           @user2 = create(:user)
     ])
   end
 

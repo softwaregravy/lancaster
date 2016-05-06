@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SmsMessage do 
 
-  subject{ FactoryGirl.build(:sms_message) }
+  subject{ build(:sms_message) }
 
   describe "#persisted?" do 
     it "should be false" do 
@@ -12,12 +12,12 @@ RSpec.describe SmsMessage do
 
   describe "#initialize" do 
     it "should set body" do 
-      attr = FactoryGirl.attributes_for(:sms_message)
+      attr = attributes_for(:sms_message)
       message = SmsMessage.new(attr)
       message.body.should eql(attr[:body])
     end
     it "should set and format the to number" do 
-      attr = FactoryGirl.attributes_for(:sms_message)
+      attr = attributes_for(:sms_message)
       message = SmsMessage.new(attr)
       message.to.should eql(PhoneNumberFormatter.format(attr[:to]))
     end

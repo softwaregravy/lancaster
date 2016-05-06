@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe "feeds/index", type: :view do
   before(:each) do
     assign(:feeds, [
-           @feed1 = FactoryGirl.create(:feed),
-           @feed2 = FactoryGirl.create(:feed)
+           @feed1 = create(:feed),
+           @feed2 = create(:feed)
     ])
   end
 

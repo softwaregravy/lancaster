@@ -20,6 +20,6 @@ RSpec.describe Subscription, type: :model do
   end
   it "should have a valid factory" do
     # once we have real tests, we can get rid of this
-    FactoryGirl.create(:subscription).should be_valid
+    create(:subscription).should be_valid
   end
 end
