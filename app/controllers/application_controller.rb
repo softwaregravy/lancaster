@@ -4,9 +4,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  # Routing for Logging in
-  after_filter :store_action
-
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
   end
@@ -19,20 +16,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def store_action
-    return unless request.get? 
-    if (request.path != "/users/sign_in" &&
-        request.path != "/users/sign_up" &&
-        request.path != "/users/password/new" &&
-        request.path != "/users/password/edit" &&
-        request.path != "/users/confirmation" &&
-        request.path != "/users/sign_out" &&
-        !request.xhr?) # don't store ajax calls
-      store_location_for(:user, request.fullpath)
-    end
-  end
-
   def after_sign_out_path_for(resource_or_scope)
     new_user_session_path
+  end
+
+  def after_sign_in_path_for(user)
+    if user.admin?
+      users_path
+    else
+      user_path(user)
+    end
   end
 end

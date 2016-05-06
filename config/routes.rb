@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
   # You can have the root of your site routed with "root"
-  root 'users#index'
+  root 'users#show'
 
   resources :users, only: [:index, :show, :edit, :update, :destroy]
   resources :feeds 

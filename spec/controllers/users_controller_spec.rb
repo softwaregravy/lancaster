@@ -39,6 +39,10 @@ RSpec.describe UsersController, type: :controller do
         get :show, {:id => @user.to_param}
         expect(assigns(:user)).to eq(@user)
       end
+      it "assigns self as @user when no params are passed" do
+        get :show
+        expect(assigns(:user)).to eq(@user)
+      end
       it "redirects away when another user is requsted" do
         get :show, {:id => @admin.to_param}
         response.should be_redirect

@@ -39,6 +39,10 @@ class User < ActiveRecord::Base
     roles.where(name: role.to_s.downcase).take.present?
   end
 
+  def admin?
+    role? 'admin'
+  end
+
   def set_default_role
     roles << Role.where(name: "client").take unless role? :client
   end

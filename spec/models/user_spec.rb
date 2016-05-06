@@ -50,6 +50,11 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#admin?" do 
+    it { FactoryGirl.create(:user).should_not be_admin }
+    it { FactoryGirl.create(:admin).should be_admin }
+  end
+
   describe "#set_default_role" do 
     it "should default to client" do 
       user = FactoryGirl.create(:user)
