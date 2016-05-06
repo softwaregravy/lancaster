@@ -8,6 +8,11 @@
   <%= @user.phone_number %>
 </p>
 
+<p>
+  <strong>Notifications Enabled</strong>
+  <%= @user.notifications_enabled %>
+</p>
+
 <% if current_user.admin? %>
 <p>
   <strong>Roles:</strong>
@@ -23,5 +28,12 @@
 <%= link_to 'Subscriptions', subscriptions_path %>
 </p>
 
+<p>
 <%= link_to 'Edit Details', edit_user_path(@user) %> | <%= link_to 'Change Email or Password', edit_user_registration_path %> 
-<%= "| " + link_to('Back', users_path) if current_user.admin? %>
+</p>
+
+<% if current_user.admin? %>
+  <p>
+  <%= link_to('All Users', users_path) %>
+  </p>
+<% end %>

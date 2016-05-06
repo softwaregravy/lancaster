@@ -20,6 +20,7 @@
 #  unconfirmed_email      :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  notifications_enabled  :boolean          default("false"), not null
 #
 
 require 'rails_helper'

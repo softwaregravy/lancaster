@@ -37,7 +37,7 @@ class UsersController < ApplicationController
     def user_params
       # params.require(:user).permit(:email, :phone_number, :password, :password_confirmation)
       # email and password must be edited via devise controller
-      params.require(:user).permit(:phone_number)
+      params.require(:user).permit(:phone_number, :notifications_enabled)
     end
 
     def set_user_id
