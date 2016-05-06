@@ -6,6 +6,7 @@ class Ability
     if user.role? :client
       can :manage, User, id: user.id
       can :create, User
+      can :read, Feed
     end
     if user.role? :admin
       can :manage, :all
