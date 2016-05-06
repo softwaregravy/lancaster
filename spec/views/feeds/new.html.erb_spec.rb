@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "feeds/new", type: :view do
   before(:each) do
-    assign(:feed, FactoryGirl.build(:feed))
+    assign(:feed, build(:feed))
   end
 
   it "renders new feed form" do

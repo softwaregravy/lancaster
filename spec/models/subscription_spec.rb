@@ -12,14 +12,11 @@
 require 'rails_helper'
 
 RSpec.describe Subscription, type: :model do
-  describe "an empty role" do 
-    subject { Subscription.new }
-    before { subject.valid? }
-    it { subject.errors.include?(:user).should == true }
-    it { subject.errors.include?(:feed).should == true }
-  end
+  it { should validate_presence_of :user }
+  it { should validate_presence_of :feed }
+
   it "should have a valid factory" do
     # once we have real tests, we can get rid of this
-    FactoryGirl.create(:subscription).should be_valid
+    create(:subscription).should be_valid
   end
 end

@@ -12,16 +12,13 @@
 require 'rails_helper'
 
 RSpec.describe Feed, type: :model do
-  describe "an empty feed" do 
-    subject { Feed.new }
-    before { subject.valid? }
-    it { subject.errors.include?(:name).should == true }
-    it { subject.errors.include?(:url).should == true }
-  end
+  it { should validate_presence_of :name }
+  it { should validate_presence_of :url }
+
   describe "#initialize" do 
     it "should initialize correctly" do 
       # no logic yet, just sanity test the class
-      FactoryGirl.create(:feed)
+      create(:feed)
     end
   end
 
@@ -33,7 +30,7 @@ RSpec.describe Feed, type: :model do
     end
     describe "#latest_title_and_link" do 
       it "should return latest title and link" do 
-        feed = FactoryGirl.create(:feed, url: "http://example.com/yyy_deals")
+        feed = create(:feed, url: "http://example.com/yyy_deals")
         feed.latest_title_and_link.should == [
           "Toronto to Osaka / Kyoto, Japan - $565 CAD roundtrip including taxes",
           "http://yyzdeals.com/toronto-to-osaka-kyoto-japan-565-cad-roundtrip-including-taxes"

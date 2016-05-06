@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "feeds/edit", type: :view do
   before(:each) do
-    @feed = assign(:feed, FactoryGirl.create(:feed))
+    @feed = assign(:feed, create(:feed))
   end
 
   it "renders the edit feed form" do

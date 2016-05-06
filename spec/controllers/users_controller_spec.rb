@@ -4,8 +4,8 @@ RSpec.describe UsersController, type: :controller do
 
   before do
     @original_number = "555-555-5555"
-    @user = FactoryGirl.create(:user, phone_number: @original_number)
-    @admin = FactoryGirl.create(:admin, phone_number: @original_number) 
+    @user = create(:user, phone_number: @original_number)
+    @admin = create(:admin, phone_number: @original_number) 
     # other users
   end
 

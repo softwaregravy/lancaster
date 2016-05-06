@@ -3,12 +3,12 @@ require 'rails_helper'
 RSpec.describe SubscriptionsController, type: :controller do
 
   before do 
-    @user = FactoryGirl.create(:user)
-    @feed = FactoryGirl.create(:feed)
+    @user = create(:user)
+    @feed = create(:feed)
     sign_in @user
   end
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:subscription, user_id: @user.id, feed_id: @feed.id) }
+  let(:valid_attributes) { attributes_for(:subscription, user_id: @user.id, feed_id: @feed.id) }
 
   let(:invalid_attributes) { {user_id: @user.id, feed_id: -1} }
 
@@ -22,7 +22,7 @@ RSpec.describe SubscriptionsController, type: :controller do
 
   describe "GET #new" do
     before do 
-      @feed2 = FactoryGirl.create(:feed)
+      @feed2 = create(:feed)
     end
     it "assigns a new subscription as @subscription" do
       get :new, {}
@@ -35,12 +35,12 @@ RSpec.describe SubscriptionsController, type: :controller do
     end
     context "as an admin" do 
       before do 
-        @admin = FactoryGirl.create(:admin)
+        @admin = create(:admin)
         sign_in @admin
       end
       it "remembers no feeds" do 
         # and thus allows admins to assign any feed to any user
-        FactoryGirl.create(:subscription, user: @admin)
+        create(:subscription, user: @admin)
         get :new
         expect(assigns(:current_feeds)).to eq([])
       end

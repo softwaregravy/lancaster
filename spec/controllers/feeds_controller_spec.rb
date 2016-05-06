@@ -2,15 +2,15 @@ require 'rails_helper'
 
 RSpec.describe FeedsController, type: :controller do
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:feed) }
+  let(:valid_attributes) { attributes_for(:feed) }
   let(:invalid_attributes) {
-    FactoryGirl.attributes_for(:feed).merge(url: "definitely not a valid url")
+    attributes_for(:feed).merge(url: "definitely not a valid url")
   }
 
   before do 
-    @admin = FactoryGirl.create(:admin)
+    @admin = create(:admin)
     sign_in @admin 
-    @feed = FactoryGirl.create(:feed)
+    @feed = create(:feed)
   end
 
   describe "GET #index" do
