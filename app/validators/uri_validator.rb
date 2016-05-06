@@ -30,6 +30,7 @@ private
 
   def parse_uri(value)
     uri = Addressable::URI.parse(value)
+    return nil unless uri
     uri.scheme && uri.host && uri
   rescue URI::InvalidURIError, Addressable::URI::InvalidURIError, TypeError
   end

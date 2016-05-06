@@ -11,7 +11,7 @@
 
 class Feed < ActiveRecord::Base
   validates_presence_of :name, :url
-  validates :url, presence: true
+  validates :url, uri: true, presence: true
 
   def fetch_and_parse
     Rails.cache.fetch('feed', expires_in: 900) do 
