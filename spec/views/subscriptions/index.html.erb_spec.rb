@@ -2,9 +2,12 @@ require 'rails_helper'
 
 RSpec.describe "subscriptions/index", type: :view do
   before(:each) do
+    @user = FactoryGirl.create :user
+    sign_in @user
+
     assign(:subscriptions, [
-           @s1 = FactoryGirl.create(:subscription),
-           @s2 = FactoryGirl.create(:subscription)
+           @s1 = FactoryGirl.create(:subscription, user: @user),
+           @s2 = FactoryGirl.create(:subscription, user: @user)
     ])
   end
 
