@@ -1,4 +1,4 @@
-class PrepareSmsMessagesWorker
+class PrepareNotificationsWorker
   include Sidekiq::Worker
   sidekiq_options queue: :sms
 
