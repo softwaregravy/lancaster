@@ -37,6 +37,7 @@ RSpec.describe SmsMessageAttempt, type: :model do
   end
 
   describe "#attempt_send" do 
+    context "when the call succeeds" do 
     before do 
       number = "+15555555555"
       body = "message"
@@ -56,6 +57,18 @@ RSpec.describe SmsMessageAttempt, type: :model do
       @sms.attempted.should == nil
       @sms.attempt_send
       @sms.attempted.should_not == nil
+    end
+    it "should report success" do 
+      expect_any_instance_of(SmsMessage).to receive(:succeeded!)
+      @sms.attempt_send
+    end
+    end
+    context "if the call fails" do 
+      subject { create :sms_message_attempt }
+      it "should report failure" do 
+        expect(subject).to receive(:send_message).and_raise(ZeroDivisionError.new)
+        subject.attempt_send
+      end
     end
   end
 end

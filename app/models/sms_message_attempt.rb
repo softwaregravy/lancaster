@@ -32,10 +32,11 @@ class SmsMessageAttempt < ActiveRecord::Base
       send_message
       self.successful = true
       self.save
-      #sms_message.succeeded!
+      sms_message.succeeded!
     rescue => e
       # I don't know what exceptions are possible yet
       ErrorLogger.log_error(e)
+      sms_message.failed!
     end
   end
 
