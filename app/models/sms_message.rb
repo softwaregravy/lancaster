@@ -30,7 +30,7 @@ class SmsMessage < ActiveRecord::Base
   end
 
   def queue_attempt
-    attempt = SmsMessageAttempt.create(sms_message: self)
+    attempt = SmsMessageAttempt.create!(sms_message: self)
     SendSmsWorker.perform_async(attempt.id)
   end
 
