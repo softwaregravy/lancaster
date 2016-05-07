@@ -16,11 +16,13 @@ class Feed < ActiveRecord::Base
   validates_presence_of :name, :url
   validates :url, uri: true, presence: true
 
-  def fetch_latest_post
+  def fetch_latest_post(send_updates = false)
     post = latest_post
     #TODO critical path here for threadsafety. can I lock it?
     #mitigate: locked in the db, so I guess first one through wins
-    posts.find_or_create_by(title: post.title, url: post.url)
+    posts.find_or_create_by(title: post.title, url: post.url) do |post|
+      PrepareSmsMessagesWorker.perform_async(post.id) if send_updates
+    end
   end
 
   def fetch_and_parse
