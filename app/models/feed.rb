@@ -18,7 +18,8 @@ class Feed < ActiveRecord::Base
 
   def fetch_latest_post
     post = latest_post
-    #TODO critical path here for threadsafety
+    #TODO critical path here for threadsafety. can I lock it?
+    #mitigate: locked in the db, so I guess first one through wins
     posts.find_or_create_by(title: post.title, url: post.url)
   end
 
