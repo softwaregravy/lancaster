@@ -44,6 +44,10 @@ class User < ActiveRecord::Base
     role? 'admin'
   end
 
+  def contactable?
+    return phone_number.present?
+  end
+
   def set_default_role
     roles << Role.where(name: "client").take unless role? :client
   end
