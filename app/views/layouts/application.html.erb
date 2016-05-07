@@ -11,6 +11,9 @@
   <% if user_signed_in? %>
     <%= link_to "sign out", destroy_user_session_path, method: :delete   %>
     <% if current_user.admin? %>
+      <%= link_to "Users", users_path %>
+      <%= link_to "Subscriptions", subscriptions_path %>
+      <%= link_to "Feeds", feeds_path %>
       <%= link_to "Sidekiq", sidekiq_web_path %>
     <% end %>
 

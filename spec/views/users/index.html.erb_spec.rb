@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "users/index", type: :view do
   before(:each) do
+    sign_in create(:admin)
     assign(:users, [
            @user1 = create(:user),
            @user2 = create(:user)

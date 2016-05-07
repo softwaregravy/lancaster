@@ -3,6 +3,7 @@
 <table>
   <thead>
     <tr>
+      <% if current_user.admin? %><th>ID</th><% end %>
       <th>Email</th>
       <th>Phone number</th>
       <th>Notifications Enabled</th>
@@ -13,6 +14,7 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
+        <% if current_user.admin? %><td><%= user.id %></td><% end %>
         <td><%= user.email %></td>
         <td><%= user.phone_number %></td>
         <td><%= user.notifications_enabled %></td>
