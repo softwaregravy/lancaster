@@ -11,9 +11,16 @@
 
 class Feed < ActiveRecord::Base
   has_many :subscriptions
+  has_many :posts
 
   validates_presence_of :name, :url
   validates :url, uri: true, presence: true
+
+  def fetch_latest_post
+    post = latest_post
+    #TODO critical path here for threadsafety
+    posts.find_or_create_by(title: post.title, url: post.url)
+  end
 
   def fetch_and_parse
     Rails.cache.fetch('feed', expires_in: 900) do 
