@@ -20,9 +20,14 @@ class Feed < ActiveRecord::Base
     post = latest_post
     #TODO critical path here for threadsafety. can I lock it?
     #mitigate: locked in the db, so I guess first one through wins
-    posts.find_or_create_by(title: post.title, url: post.url) do |post|
-      PrepareSmsMessagesWorker.perform_async(post.id) if send_updates
+    my_post = posts.find_or_initialize_by(title: post.title, url: post.url) 
+    if my_post.new_record? && send_updates
+      my_post.save!
+      PrepareSmsMessagesWorker.perform_async(my_post.id) 
+    else
+      my_post.save!
     end
+    my_post
   end
 
   def fetch_and_parse

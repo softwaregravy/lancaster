@@ -39,6 +39,7 @@ gem 'dalli' # cache
 gem 'awesome_print' # cause I'm a prima donna
 
 gem 'sidekiq'
+gem 'sinatra', :require => nil
 gem 'clockwork'
 
 group :development, :test do
