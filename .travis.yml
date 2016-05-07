@@ -3,6 +3,7 @@ bundler_args: --without production
 services: 
   - postgresql
   - memcached
+  - redis-server
 before_script:
   - psql -c 'create database lancaster_test;' -U postgres
   - cp config/database.yml.travis config/database.yml
