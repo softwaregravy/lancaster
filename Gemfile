@@ -45,8 +45,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'webmock'
-  gem 'spring'
-  gem 'spring-commands-rspec'
 end
 
 group :development do
