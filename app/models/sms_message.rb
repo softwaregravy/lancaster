@@ -6,7 +6,7 @@
 #  send_initiated :datetime
 #  send_completed :datetime
 #  retry_enabled  :boolean          default("true"), not null
-#  max_retries    :integer          default("0"), not null
+#  max_attempts   :integer          default("1"), not null
 #  user_id        :integer          not null
 #  post_id        :integer          not null
 #  created_at     :datetime         not null
@@ -30,6 +30,8 @@ class SmsMessage < ActiveRecord::Base
   end
 
   def queue_attempt
+    attempt = SmsMessageAttempt.create(sms_message: self)
+    SendSmsWorker.perform_async(attempt.id)
   end
 
   def succeeded!
@@ -38,7 +40,7 @@ class SmsMessage < ActiveRecord::Base
   end
 
   def failed!
-    queue_attempt unless retry_enabled && sms_message_attempts.count < max_retries
+    queue_attempt if retry_enabled && sms_message_attempts.count < max_attempts 
   end
 
 end

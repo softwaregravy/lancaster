@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 20160507003300) do
     t.datetime "send_initiated"
     t.datetime "send_completed"
     t.boolean  "retry_enabled",  default: true, null: false
-    t.integer  "max_retries",    default: 0,    null: false
+    t.integer  "max_attempts",   default: 1,    null: false
     t.integer  "user_id",                       null: false
     t.integer  "post_id",                       null: false
     t.datetime "created_at",                    null: false
