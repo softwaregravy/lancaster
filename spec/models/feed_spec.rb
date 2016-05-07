@@ -61,7 +61,11 @@ RSpec.describe Feed, type: :model do
           feed.fetch_latest_post.should be_a(Post)
         }.to_not change(Post, :count)
       end
-
+      it "should notify subscribers" do 
+        feed = create(:feed, url: @feed_url)
+        expect(PrepareSmsMessagesWorker).to receive(:perform_async)
+        feed.fetch_latest_post(true)
+      end
     end
 
   end
