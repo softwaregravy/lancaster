@@ -56,6 +56,15 @@ RSpec.describe User, type: :model do
     it { create(:admin).should be_admin }
   end
 
+  describe "#contactable?" do 
+    it "should be true when a phone number is valid" do 
+      create(:user).should be_contactable
+    end
+    it "should be false when the phone number is missing" do
+      create(:user, phone_number: nil).should_not be_contactable
+    end
+  end
+
   describe "#set_default_role" do 
     it "should default to client" do 
       user = create(:user)
