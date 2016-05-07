@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160506235835) do
+ActiveRecord::Schema.define(version: 20160507003300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,33 @@ ActiveRecord::Schema.define(version: 20160506235835) do
   add_index "roles_users", ["role_id", "user_id"], name: "index_roles_users_on_role_id_and_user_id", using: :btree
   add_index "roles_users", ["user_id", "role_id"], name: "index_roles_users_on_user_id_and_role_id", using: :btree
 
+  create_table "sms_message_attempts", force: :cascade do |t|
+    t.datetime "attempted"
+    t.boolean  "successful",     default: false, null: false
+    t.string   "to_number",                      null: false
+    t.string   "from_number",                    null: false
+    t.string   "body",                           null: false
+    t.integer  "sms_message_id",                 null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "sms_message_attempts", ["sms_message_id"], name: "index_sms_message_attempts_on_sms_message_id", using: :btree
+
+  create_table "sms_messages", force: :cascade do |t|
+    t.datetime "send_initiated"
+    t.datetime "send_completed"
+    t.boolean  "retry_enabled",  default: true, null: false
+    t.integer  "max_retries",    default: 0,    null: false
+    t.integer  "user_id",                       null: false
+    t.integer  "post_id",                       null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "sms_messages", ["post_id"], name: "index_sms_messages_on_post_id", using: :btree
+  add_index "sms_messages", ["user_id"], name: "index_sms_messages_on_user_id", using: :btree
+
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "user_id",    null: false
     t.integer  "feed_id",    null: false
@@ -91,4 +118,7 @@ ActiveRecord::Schema.define(version: 20160506235835) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "posts", "feeds"
+  add_foreign_key "sms_message_attempts", "sms_messages"
+  add_foreign_key "sms_messages", "posts"
+  add_foreign_key "sms_messages", "users"
 end

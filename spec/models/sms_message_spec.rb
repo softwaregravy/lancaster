@@ -1,54 +1,64 @@
+# == Schema Information
+#
+# Table name: sms_messages
+#
+#  id             :integer          not null, primary key
+#  send_initiated :datetime
+#  send_completed :datetime
+#  retry_enabled  :boolean          default("true"), not null
+#  max_retries    :integer          default("0"), not null
+#  user_id        :integer          not null
+#  post_id        :integer          not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+
 require 'rails_helper'
 
-RSpec.describe SmsMessage do 
-
-  subject{ build(:sms_message) }
-
-  describe "#persisted?" do 
-    it "should be false" do 
-      expect(subject.persisted?).to be false
-    end 
+RSpec.describe SmsMessage, type: :model do
+  it "should have a valid factory" do 
+    message = create :sms_message
+    message.user.should be_valid
+    message.post.should be_valid
   end
-
-  describe "#initialize" do 
-    it "should set body" do 
-      attr = attributes_for(:sms_message)
-      message = SmsMessage.new(attr)
-      message.body.should eql(attr[:body])
-    end
-    it "should set and format the to number" do 
-      attr = attributes_for(:sms_message)
-      message = SmsMessage.new(attr)
-      message.to.should eql(PhoneNumberFormatter.format(attr[:to]))
+  describe "#record_start_time" do 
+    subject { create :sms_message }
+    it "should record start time" do 
+      subject.send_initiated.should == nil
+      subject.record_start_time
+      subject.send_initiated.should_not == nil
     end
   end
-
-  describe "#to=" do 
-    before do 
-      # subject is created lazy, force it to exist before test
-      subject.persisted?
-    end
-    it "should format and assign the phone number" do 
-      seed_number = "+15555555555"
-      expect(PhoneNumberFormatter).to receive(:format).and_return(seed_number)
-      subject.to = "1231231234"
-      expect(subject.to).to eql(seed_number)
+  describe "#succeeded" do 
+    subject { create :sms_message }
+    it "should record the completion time" do 
+      subject.send_completed.should == nil
+      subject.succeeded!
+      subject.send_completed.should_not == nil
     end
   end
 
-  describe "#send" do 
-    it "should send the message" do 
-      number = "+15555555555"
-      body = "message"
-      twilio = double(:twilio)
-      expect(Twilio::REST::Client).to receive(:new).and_return(twilio)
-      messages = double(:twilio_messages)
-      expect(twilio).to receive(:messages).and_return(messages)
-      expect(messages).to receive(:create).with({to: number, body: body, from: SmsMessage.from_number})
-
-      sms = SmsMessage.new({to: number, body: body})
-      sms.send
+  describe "#failed" do 
+    context "when max retries is zero" do
+      subject { create :sms_message, retry_enabled: true, max_retries: 0 }
+      it "should not retry" 
     end
+    context "when max retries is 1" do
+      subject { create :sms_message, retry_enabled: true, max_retries: 1 }
+      it "should retry" 
+    end
+    context "when max retries is 1, but retry_enabled is false" do
+      subject { create :sms_message, retry_enabled: false, max_retries: 1 }
+      it "should not retry"
+    end
+    context "with past failures" do 
+      subject { create :sms_message, retry_enabled: true, max_retries: 3 }
+      before do 
+        3.times { create :sms_message_attempt, sms_message: subject }
+      end
+      it "should retry"
+    end
+
   end
 
 end
