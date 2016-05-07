@@ -25,17 +25,43 @@ RSpec.describe Feed, type: :model do
   describe "getting feed data" do 
     before do 
       @feed_data = File.read(Rails.root.join('spec', 'fixtures', 'yyz_deals_feed.xml'))
-      # https://github.com/lostisland/faraday#using-faraday-for-testing
-      stub_request(:any, "http://example.com/yyy_deals").to_return(body: @feed_data)
+      @feed_url = "http://example.com/yyy_deals"
+      stub_request(:any, @feed_url).to_return(body: @feed_data)
     end
     describe "#latest_title_and_link" do 
       it "should return latest title and link" do 
-        feed = create(:feed, url: "http://example.com/yyy_deals")
+        feed = create(:feed, url: @feed_url)
         feed.latest_title_and_link.should == [
           "Toronto to Osaka / Kyoto, Japan - $565 CAD roundtrip including taxes",
           "http://yyzdeals.com/toronto-to-osaka-kyoto-japan-565-cad-roundtrip-including-taxes"
         ]
       end
+    end
+    describe "#fetch_latest_post" do 
+      it "should return the post" do 
+        feed = create(:feed, url: @feed_url)
+        feed.fetch_latest_post.should be_a(Post)
+      end
+      it "should save the post to the database" do 
+        feed = create(:feed, url: @feed_url)
+        expect {
+          feed.fetch_latest_post.should be_a(Post)
+        }.to change(Post, :count).by(1)
+      end
+      it "should have the correct data" do 
+        feed = create(:feed, url: @feed_url)
+        post = feed.fetch_latest_post
+        post.title.should == "Toronto to Osaka / Kyoto, Japan - $565 CAD roundtrip including taxes"
+        post.url.should == "http://yyzdeals.com/toronto-to-osaka-kyoto-japan-565-cad-roundtrip-including-taxes"
+      end
+      it "should not create duplicates" do 
+        feed = create(:feed, url: @feed_url)
+        feed.fetch_latest_post.should be_a(Post)
+        expect {
+          feed.fetch_latest_post.should be_a(Post)
+        }.to_not change(Post, :count)
+      end
+
     end
 
   end
