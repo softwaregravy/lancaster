@@ -6,7 +6,6 @@ class SendSmsWorker
 
   def perform(sms_message_attempt_id)
     attempt = SmsMessageAttempt.find(sms_message_attempt_id)
-    ap attempt
     attempt.attempt_send
   end
 end
