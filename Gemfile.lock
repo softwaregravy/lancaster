@@ -196,6 +196,8 @@ GEM
     redis (3.3.0)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
+    rollbar (2.11.2)
+      multi_json
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -257,8 +259,6 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.2)
-    turbolinks (2.5.3)
-      coffee-rails
     twilio-ruby (4.11.1)
       builder (>= 2.1.2)
       jwt (~> 1.0)
@@ -305,6 +305,7 @@ DEPENDENCIES
   rails (= 4.2.6)
   rails_12factor
   rb-fsevent
+  rollbar
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
@@ -312,7 +313,6 @@ DEPENDENCIES
   sidekiq
   simplecov
   sinatra
-  turbolinks
   twilio-ruby (~> 4.11.1)
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
