@@ -40,10 +40,12 @@ gem 'awesome_print' # cause I'm a prima donna
 
 gem 'sidekiq'
 gem 'sinatra', :require => nil
-gem 'clockwork'
+gem 'aws_tickwork'
 
 # Error Tracking
 gem 'rollbar'
+
+gem 'quiet_assets'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
