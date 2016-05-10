@@ -3,6 +3,8 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
   devise_for :users
+  mount AwsTickwork::Engine => "/aws_tickwork"
+
   # You can have the root of your site routed with "root"
   root 'users#show'
 

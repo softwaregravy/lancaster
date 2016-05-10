@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160507003300) do
+ActiveRecord::Schema.define(version: 20160510051113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "aws_tickwork_db_data_stores", force: :cascade do |t|
+    t.string   "key",        null: false
+    t.integer  "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "aws_tickwork_db_data_stores", ["key"], name: "index_aws_tickwork_db_data_stores_on_key", unique: true, using: :btree
 
   create_table "feeds", force: :cascade do |t|
     t.string   "name",       null: false
