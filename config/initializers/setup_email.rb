@@ -1,15 +1,5 @@
 require 'development_mail_interceptor'
 
-gmail_settings = { 
-  address: 'smtp.gmail.com',
-  port: 587,
-  domain: 'gmail',
-  user_name: 'john.development.test@gmail.com',
-  password: ENV['EMAIL_PASSWORD'],
-  authentication: 'plain',
-  enable_starttls_auto: true
-}
-
 sendgrid_settings = {
   :address        => 'smtp.sendgrid.net',
   :port           => '587',
@@ -23,11 +13,7 @@ sendgrid_settings = {
 
 if Rails.env.production?
   ActionMailer::Base.smtp_settings = sendgrid_settings
-else
-  ActionMailer::Base.smtp_settings = gmail_settings
+#else
+  #ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor)                                                                                                                                                                                                                                                                                                     
 end
 
-#TODO currently restrict any live emails. When we're ready, we need to open up for production to actually send emails
-unless Rails.env.production?
-  ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor)                                                                                                                                                                                                                                                                                                     
-end

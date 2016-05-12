@@ -1,5 +1,5 @@
 class DevelopmentMailInterceptor                                                                                                                                                                                                                                                                                                                                          
-  TESTING_EMAIL ||= 'lancaster_testing@johnhinnegan.com'
+  TESTING_EMAIL = 'no-reply@sample.com'
 
   def self.delivering_email(message)
     return if Rails.env.test?
