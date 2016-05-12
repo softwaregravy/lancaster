@@ -13,7 +13,7 @@ class SubscriptionsController < ApplicationController
     end
     @feeds = Feed.accessible_by(current_ability)
     @feeds.each do |feed|
-      feed.name += " (already subscribed)" if @current_feeds.include? feed.id
+      feed.display_name += " (already subscribed)" if @current_feeds.include? feed.id
     end
   end
 

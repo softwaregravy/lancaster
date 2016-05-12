@@ -4,15 +4,12 @@ RSpec.describe "feeds/index", type: :view do
   before(:each) do
     assign(:feeds, [
            @feed1 = create(:feed),
-           @feed2 = create(:feed)
     ])
   end
 
   it "renders a list of feeds" do
     render
-    assert_select "tr>td", :text => @feed1.name
+    assert_select "tr>td", :text => @feed1.display_name
     assert_select "tr>td", :text => @feed1.url
-    assert_select "tr>td", :text => @feed2.name
-    assert_select "tr>td", :text => @feed2.url
   end
 end

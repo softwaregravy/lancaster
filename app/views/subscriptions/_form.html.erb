@@ -19,7 +19,7 @@
   <% else %>
     <%= f.hidden_field(:user_id, value: current_user.id) %>
   <% end %>
-  <%= f.collection_select :feed_id, @feeds, :id, :name, {include_blank: true, disabled: lambda{|feed| @current_feeds.include? feed.id}} %>
+  <%= f.collection_select :feed_id, @feeds, :id, :display_name, {include_blank: true, disabled: lambda{|feed| @current_feeds.include? feed.id}} %>
   <div class="actions">
     <%= f.submit %>
   </div>
