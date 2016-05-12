@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show, :edit, :update, :destroy]
   resources :feeds 
   resources :subscriptions, only: [:index, :new, :create, :destroy]
+  resources :web_pages
 
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'

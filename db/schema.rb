@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512184416) do
+ActiveRecord::Schema.define(version: 20160512230741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,8 +127,27 @@ ActiveRecord::Schema.define(version: 20160512184416) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "web_page_visits", force: :cascade do |t|
+    t.integer  "web_page_id"
+    t.string   "checksum"
+    t.integer  "size"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "web_page_visits", ["web_page_id"], name: "index_web_page_visits_on_web_page_id", using: :btree
+
+  create_table "web_pages", force: :cascade do |t|
+    t.string   "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "web_pages", ["url"], name: "index_web_pages_on_url", unique: true, using: :btree
+
   add_foreign_key "posts", "feeds"
   add_foreign_key "sms_message_attempts", "sms_messages"
   add_foreign_key "sms_messages", "posts"
   add_foreign_key "sms_messages", "users"
+  add_foreign_key "web_page_visits", "web_pages"
 end
