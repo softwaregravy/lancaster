@@ -48,7 +48,6 @@ RSpec.configure do |config|
   end
 
 
-
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
@@ -99,3 +98,5 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+

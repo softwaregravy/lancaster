@@ -21,9 +21,6 @@ RSpec.describe SubscriptionsController, type: :controller do
   end
 
   describe "GET #new" do
-    before do 
-      @feed2 = create(:feed)
-    end
     it "assigns a new subscription as @subscription" do
       get :new, {}
       expect(assigns(:subscription)).to be_a_new(Subscription)
@@ -40,7 +37,7 @@ RSpec.describe SubscriptionsController, type: :controller do
       end
       it "remembers no feeds" do 
         # and thus allows admins to assign any feed to any user
-        create(:subscription, user: @admin)
+        create(:subscription, user: @admin, feed: @feed)
         get :new
         expect(assigns(:current_feeds)).to eq([])
       end

@@ -7,7 +7,6 @@ RSpec.describe "subscriptions/index", type: :view do
 
     assign(:subscriptions, [
            @s1 = create(:subscription, user: @user),
-           @s2 = create(:subscription, user: @user)
     ])
   end
 
@@ -15,7 +14,5 @@ RSpec.describe "subscriptions/index", type: :view do
     render
     assert_select "tr>td", :text => @s1.user.email
     assert_select "tr>td", :text => @s1.feed.name
-    assert_select "tr>td", :text => @s2.user.email
-    assert_select "tr>td", :text => @s2.feed.name
   end
 end

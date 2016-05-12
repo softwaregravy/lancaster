@@ -13,7 +13,7 @@
     <% @subscriptions.each do |subscription| %>
       <tr>
         <td><%= subscription.user.email %></td>
-        <td><%= subscription.feed.name %></td>
+        <td><%= subscription.feed.display_name %></td>
         <td><%= link_to 'Destroy', subscription, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

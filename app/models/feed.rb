@@ -7,14 +7,19 @@
 #  url        :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  title      :string
 #
 
 class Feed < ActiveRecord::Base
   has_many :subscriptions
   has_many :posts
 
-  validates_presence_of :name, :url
   validates :url, uri: true, presence: true
+  before_save :verify_feed, if: Proc.new {|f| new_record? || url_changed? }
+
+  def display_name
+    name || title
+  end
 
   def fetch_latest_post(send_updates = false)
     post = latest_post
@@ -44,4 +49,15 @@ class Feed < ActiveRecord::Base
     post = latest_post
     [post.title, post.url]
   end
+
+  def verify_feed
+    if url.present?
+      feedjira = fetch_and_parse
+      self.title = feedjira.title
+      unless title.present?
+        self.title = Addressable::URI.parse(url).host
+      end
+    end
+  end
 end
+
