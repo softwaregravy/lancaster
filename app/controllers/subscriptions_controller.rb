@@ -12,9 +12,6 @@ class SubscriptionsController < ApplicationController
       @current_feeds = current_user.subscriptions.pluck(:feed_id)
     end
     @feeds = Feed.accessible_by(current_ability)
-    @feeds.each do |feed|
-      feed.display_name += " (already subscribed)" if @current_feeds.include? feed.id
-    end
   end
 
   def create
