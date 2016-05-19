@@ -14,8 +14,13 @@ class WebPage < ActiveRecord::Base
   # tldr: don't create field page_contents
  
   has_many :web_page_visits
+  has_many :subscriptions, as: :subscribable
 
   validates :url, uri: true, presence: true
+
+  def display_name
+    Addressable::URI.parse(url).host
+  end
 
   def visit!
     WebPageVisit.visit(self)

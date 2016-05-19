@@ -8,7 +8,7 @@ RSpec.describe SubscriptionsController, type: :controller do
     sign_in @user
   end
 
-  let(:valid_attributes) { attributes_for(:subscription, user_id: @user.id, subscribable_id: @feed.id, subscribable_type: "Feed") }
+  let(:valid_attributes) { attributes_for(:subscription, user_id: @user.id, subscribable_id: @feed.id, subscribable_type: "Feed", notification_preference: "sms") }
 
   let(:invalid_attributes) { {user_id: @user.id, feed_id: -1} }
 

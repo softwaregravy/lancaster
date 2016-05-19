@@ -19,6 +19,7 @@
   <% else %>
     <%= f.hidden_field(:user_id, value: current_user.id) %>
     <%= f.hidden_field(:subscribable_type, value: "Feed") %>
+    <%= f.hidden_field(:notification_preference, value: "sms") %>
   <% end %>
   <%= f.collection_select :subscribable_id, @feeds, :id, :display_name, {include_blank: true, disabled: lambda{|feed| @current_feeds.include? feed.id}} %>
   <div class="actions">

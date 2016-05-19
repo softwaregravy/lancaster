@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519211423) do
+ActiveRecord::Schema.define(version: 20160519224239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,11 +93,12 @@ ActiveRecord::Schema.define(version: 20160519211423) do
   add_index "sms_messages", ["user_id"], name: "index_sms_messages_on_user_id", using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
-    t.integer  "user_id",           null: false
-    t.integer  "subscribable_id",   null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.string   "subscribable_type"
+    t.integer  "user_id",                 null: false
+    t.integer  "subscribable_id",         null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "subscribable_type",       null: false
+    t.string   "notification_preference", null: false
   end
 
   add_index "subscriptions", ["subscribable_id"], name: "index_subscriptions_on_subscribable_id", using: :btree
