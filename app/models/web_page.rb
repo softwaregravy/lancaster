@@ -13,7 +13,6 @@ class WebPage < ActiveRecord::Base
   # with ActiveRecord if field page_contents added
   # tldr: don't create field page_contents
  
-  
   has_many :web_page_visits
 
   validates :url, uri: true, presence: true

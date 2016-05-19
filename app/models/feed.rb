@@ -11,7 +11,7 @@
 #
 
 class Feed < ActiveRecord::Base
-  has_many :subscriptions
+  has_many :subscriptions, as: :subscribable
   has_many :posts
 
   validates :url, uri: true, presence: true

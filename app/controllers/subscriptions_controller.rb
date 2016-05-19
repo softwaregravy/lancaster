@@ -9,7 +9,7 @@ class SubscriptionsController < ApplicationController
     if current_user.admin?
       @current_feeds = []
     else
-      @current_feeds = current_user.subscriptions.pluck(:feed_id)
+      @current_feeds = current_user.subscriptions.pluck(:subscribable_id)
     end
     @feeds = Feed.accessible_by(current_ability)
   end
@@ -37,6 +37,6 @@ class SubscriptionsController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def subscription_params
-      params.require(:subscription).permit(:user_id, :feed_id)
+      params.require(:subscription).permit(:user_id, :subscribable_id, :subscribable_type)
     end
 end
