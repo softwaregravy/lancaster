@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe PrepareNotificationsWorker do 
+RSpec.describe PrepareFeedNotificationsWorker do 
   describe "#perform" do 
     context "when the user allows notifications" do 
       before do

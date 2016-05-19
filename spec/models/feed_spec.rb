@@ -101,7 +101,7 @@ RSpec.describe Feed, type: :model do
       end
       it "should notify subscribers" do 
         feed = create(:feed, url: @feed_url)
-        expect(PrepareNotificationsWorker).to receive(:perform_async)
+        expect(PrepareFeedNotificationsWorker).to receive(:perform_async)
         feed.fetch_latest_post(true)
       end
     end

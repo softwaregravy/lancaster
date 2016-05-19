@@ -28,7 +28,7 @@ class Feed < ActiveRecord::Base
     my_post = posts.find_or_initialize_by(title: post.title, url: post.url) 
     if my_post.new_record? && send_updates
       my_post.save!
-      PrepareNotificationsWorker.perform_async(my_post.id) 
+      PrepareFeedNotificationsWorker.perform_async(my_post.id) 
     else
       my_post.save!
     end
