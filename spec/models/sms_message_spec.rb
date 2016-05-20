@@ -2,15 +2,15 @@
 #
 # Table name: sms_messages
 #
-#  id             :integer          not null, primary key
-#  send_initiated :datetime
-#  send_completed :datetime
-#  retry_enabled  :boolean          default("true"), not null
-#  max_attempts   :integer          default("1"), not null
-#  user_id        :integer          not null
-#  post_id        :integer          not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id              :integer          not null, primary key
+#  send_initiated  :datetime
+#  send_completed  :datetime
+#  retry_enabled   :boolean          default("true"), not null
+#  max_attempts    :integer          default("1"), not null
+#  user_id         :integer          not null
+#  notification_id :integer          not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
 require 'rails_helper'
@@ -20,7 +20,7 @@ RSpec.describe SmsMessage, type: :model do
   it "should have a valid factory" do 
     message = create :sms_message
     message.user.should be_valid
-    message.post.should be_valid
+    message.notification.should be_valid
   end
   describe "#record_start_time" do 
     subject { create :sms_message }
@@ -43,7 +43,7 @@ RSpec.describe SmsMessage, type: :model do
     it "should create an sms message attempt" do 
       expect{subject.queue_attempt}.to change(SmsMessageAttempt, :count).by 1
     end
-    it "should pass the id to the job" 
+    it "should pass the id to the job"
     # can't really find a good way to test this
   end
 

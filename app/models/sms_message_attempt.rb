@@ -45,11 +45,7 @@ class SmsMessageAttempt < ActiveRecord::Base
   def set_defaults
     self.from_number ||= SmsMessageAttempt.from_number
     self.to_number ||= sms_message.user.phone_number
-    self.body ||= default_body
-  end
-
-  def default_body
-    sms_message.post.title + " " + sms_message.post.url
+    self.body ||= sms_message.notification.short_message
   end
 
   def client

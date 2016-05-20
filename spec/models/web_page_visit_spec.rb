@@ -20,21 +20,30 @@ RSpec.describe WebPageVisit, type: :model do
     create :web_page_visit
   end
 
-  describe "#visit" do 
-    before do 
-      @web_page = create :web_page, url: "http://www.yyzdeals.com"
-      stub_request(:get, "http://www.yyzdeals.com/").to_return(:status => 200, :body => "I'm a webpage!")
-
+  describe "#fetch_notification" do 
+    subject { create :web_page_visit }
+    context "when no notification exists" do 
+      it "creates a new notification" do 
+        expect {
+          subject.fetch_notification
+        }.to change(Notification, :count).by(1)
+      end
+      it "uses good parms for the notification" do 
+        subject.fetch_notification 
+        n = Notification.last
+        n.notification_source.should == subject
+        n.short_message.should include(subject.web_page.url)
+        n.body.should include(subject.web_page.url)
+        n.subject.should include(subject.web_page.display_name)
+      end
     end
-    it "should create a new web_page_visit" do
-      expect {
-        WebPageVisit.visit(@web_page)
-      }.to change(WebPageVisit, :count).by(1)
-    end
-    it "should set the page size and digest" do 
-      visit = WebPageVisit.visit(@web_page)
-      visit.size.should == 14
-      visit.checksum.should == "b41af194a7fea4e1c92ea048e6ccbbfa"
+    context "when it already has a notification" do
+      before { subject.fetch_notification }
+      it "does not create a new notification" do
+        expect {
+          subject.fetch_notification
+        }.not_to change(Notification, :count)
+      end
     end
   end
 end

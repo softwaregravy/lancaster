@@ -4,9 +4,10 @@ class WebPageRefreshWorker
 
   def perform(web_page_id)
     web_page = WebPage.find(web_page_id)
-    web_page.visit!
+    visit = web_page.visit!
     if web_page.page_contents_changed?
-      WebPageNotificationWorker.perform_async(web_page.id)
+      notification = visit.fetch_notification
+      NotificationOrganizer.perform_async(notification.id)
     end
   end
 end

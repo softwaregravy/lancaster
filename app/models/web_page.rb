@@ -22,8 +22,15 @@ class WebPage < ActiveRecord::Base
     Addressable::URI.parse(url).host
   end
 
+  def visit
+    web_page_visits.last
+  end
+
   def visit!
-    WebPageVisit.visit(self)
+    page = open(url)
+    page_contents = page.read
+    digest = Digest::MD5.new.hexdigest(page_contents)
+    web_page_visits.create({size: page_contents.size, checksum: digest})
   end
 
   def page_contents_changed?

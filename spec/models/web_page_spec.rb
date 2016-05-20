@@ -17,10 +17,26 @@ RSpec.describe WebPage, type: :model do
   end
 
   describe "#visit!" do 
-    subject { create :web_page }
-    it "calls WebPageVisit.visit" do
-      WebPageVisit.should_receive(:visit).with(subject)
-      subject.visit!
+    before do 
+      @web_page = create :web_page, url: "http://www.yyzdeals.com"
+      stub_request(:get, "http://www.yyzdeals.com/").to_return(:status => 200, :body => "I'm a webpage!")
+    end
+    it "should create a new web_page_visit" do
+      expect {
+        @web_page.visit!
+      }.to change(WebPageVisit, :count).by(1)
+    end
+    it "should set the page size and digest" do 
+      visit = @web_page.visit!
+      visit.size.should == 14
+      visit.checksum.should == "b41af194a7fea4e1c92ea048e6ccbbfa"
+    end
+    describe "#visit" do 
+      it "does not create a web page visit" do
+        expect {
+          @web_page.visit
+        }.not_to change(WebPageVisit, :count)
+      end
     end
   end
 

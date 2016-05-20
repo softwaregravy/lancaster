@@ -12,6 +12,8 @@
 #
 
 class Subscription < ActiveRecord::Base
+  class UnrecognizedNotificationPreference < StandardError; end
+
   before_validation :default_notification_preference
   belongs_to :user
   belongs_to :subscribable, polymorphic: true
@@ -20,7 +22,14 @@ class Subscription < ActiveRecord::Base
   NOTIFICATION_OPTIONS = %w{sms}
   validates :notification_preference, inclusion: { in: NOTIFICATION_OPTIONS }
 
-  def send_notification!
+  def send_notification(notification)
+    #TODO protect against user preferences
+    case notification_preference
+    when "sms"
+      SmsMessage.create(notification: notification, user: self.user).execute_send
+    else
+      raise UnrecognizedNotificationPreference.new
+    end
   end
 
   def default_notification_preference

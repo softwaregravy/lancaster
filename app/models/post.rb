@@ -12,5 +12,25 @@
 
 class Post < ActiveRecord::Base
   belongs_to :feed
+  has_one :notification, as: :notification_source
   validates_presence_of :title, :url, :feed
+
+  def fetch_notification
+    if self.notification.nil?
+      create_notification(params_for_notification)
+    end
+    self.notification
+  end
+
+  def params_for_notification
+    {
+      short_message: "#{title} #{url}",
+      subject: title,
+      body: "New Post from Feed: #{feed.name}. Find it here: #{url}"
+    }
+  end
+
+  def subscribable
+    self.feed
+  end
 end

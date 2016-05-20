@@ -13,19 +13,25 @@ require 'open-uri'
 
 class WebPageVisit < ActiveRecord::Base
   belongs_to :web_page
+  has_one :notification, as: :notification_source
   validates_presence_of :checksum, :size
 
-  class << self
-    def visit(web_page)
-      page_contents = fetch_page(web_page)
-      digest = Digest::MD5.new.hexdigest(page_contents)
-      web_page.web_page_visits.create({size: page_contents.size, checksum: digest})
+  def fetch_notification
+    if self.notification.nil?
+      create_notification(params_for_notification)
     end
-
-    def fetch_page(web_page)
-      page = open(web_page.url)
-      page.read
-    end
+    self.notification
   end
 
+  def params_for_notification
+    {
+      short_message: "Webpage updated: #{web_page.url}",
+      subject: "Webpage updated: #{web_page.display_name}",
+      body: "Change detected on web page: #{web_page.url}"
+    }
+  end
+
+  def subscribable
+    self.web_page
+  end
 end

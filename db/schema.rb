@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519224239) do
+ActiveRecord::Schema.define(version: 20160520010441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,18 @@ ActiveRecord::Schema.define(version: 20160519224239) do
 
   add_index "feeds", ["name"], name: "index_feeds_on_name", unique: true, using: :btree
   add_index "feeds", ["url"], name: "index_feeds_on_url", unique: true, using: :btree
+
+  create_table "notifications", force: :cascade do |t|
+    t.string   "subject"
+    t.string   "body"
+    t.string   "short_message"
+    t.integer  "notification_source_id"
+    t.string   "notification_source_type"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "notifications", ["notification_source_type", "notification_source_id"], name: "index_notifications_notifications_source", using: :btree
 
   create_table "posts", force: :cascade do |t|
     t.string   "title",      null: false
@@ -81,15 +93,14 @@ ActiveRecord::Schema.define(version: 20160519224239) do
   create_table "sms_messages", force: :cascade do |t|
     t.datetime "send_initiated"
     t.datetime "send_completed"
-    t.boolean  "retry_enabled",  default: true, null: false
-    t.integer  "max_attempts",   default: 1,    null: false
-    t.integer  "user_id",                       null: false
-    t.integer  "post_id",                       null: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.boolean  "retry_enabled",   default: true, null: false
+    t.integer  "max_attempts",    default: 1,    null: false
+    t.integer  "user_id",                        null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "notification_id"
   end
 
-  add_index "sms_messages", ["post_id"], name: "index_sms_messages_on_post_id", using: :btree
   add_index "sms_messages", ["user_id"], name: "index_sms_messages_on_user_id", using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
@@ -149,7 +160,6 @@ ActiveRecord::Schema.define(version: 20160519224239) do
 
   add_foreign_key "posts", "feeds"
   add_foreign_key "sms_message_attempts", "sms_messages"
-  add_foreign_key "sms_messages", "posts"
   add_foreign_key "sms_messages", "users"
   add_foreign_key "web_page_visits", "web_pages"
 end
