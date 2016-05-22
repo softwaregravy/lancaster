@@ -4,7 +4,7 @@ class NotificationOrganizer
 
   def perform(notification_id)
     notification = Notification.find(notification_id)
-    notification.subscribable.subscriptions.find_each do |sub|
+    notification.notification_source.subscribable.subscriptions.find_each do |sub|
       NotificationWorker.perform_async(sub.id, notification_id)
     end
   end

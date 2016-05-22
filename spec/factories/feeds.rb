@@ -15,4 +15,8 @@ FactoryGirl.define do
     name { Faker::Superhero.name }
     url "http://example.com/yyy_deals"
   end
+  factory :random_feed, class: Feed do
+    name { Faker::Superhero.name }
+    url { Faker::Internet.url }
+  end
 end

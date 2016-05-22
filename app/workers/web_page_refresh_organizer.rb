@@ -4,7 +4,7 @@ class WebPageRefreshOrganizer
 
   def perform
     WebPage.find_each do |web_page|
-      Resque.enqueue(WebPageRefreshWorker, web_page.id)
+      WebPageRefreshWorker.perform_async(web_page.id)
     end
   end
 end

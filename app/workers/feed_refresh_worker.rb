@@ -3,7 +3,7 @@ class FeedRefreshWorker
   sidekiq_options queue: :sms
 
   def perform(feed_id)
-    post = Feed.find(find_id).fetch_latest_post
+    post = Feed.find(feed_id).fetch_latest_post
     if post.present?
       notification = post.fetch_notification
       NotificationOrganizer.perform_async(notification.id)

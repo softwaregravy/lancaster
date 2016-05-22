@@ -23,7 +23,7 @@ class Subscription < ActiveRecord::Base
   validates :notification_preference, inclusion: { in: NOTIFICATION_OPTIONS }
 
   def send_notification(notification)
-    #TODO protect against user preferences
+    return unless user.notifications_enabled && user.contactable?
     case notification_preference
     when "sms"
       SmsMessage.create(notification: notification, user: self.user).execute_send
