@@ -3,11 +3,7 @@ class AddNotificationTypeToSubscriptions < ActiveRecord::Migration
   end
   def up
     add_column :subscriptions, :notification_preference, :string
-    Subscription.find_each do |s|
-      s.notification_preference = "sms"
-      s.save!
-    end
-    change_column :subscriptions, :notification_preference, :string, null: false
+    Subscription.update_all(notification_preference: "sms")
   end
 
   def down

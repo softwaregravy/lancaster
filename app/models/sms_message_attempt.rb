@@ -29,12 +29,15 @@ class SmsMessageAttempt < ActiveRecord::Base
     self.attempted = DateTime.now
     self.save!
     begin
+      Rails.logger.info "Sending SMS Message: #{self.inspect}"
       send_message
       self.successful = true
       self.save
       sms_message.succeeded!
+      Rails.logger.info "Successfully sent SMS Message: #{self.inspect}"
     rescue => e
       # I don't know what exceptions are possible yet
+      Rails.logger.error "Unsuccessful send attmpet SMS Message: #{self.inspect}"
       ErrorLogger.log_error(e)
       sms_message.failed!
     end

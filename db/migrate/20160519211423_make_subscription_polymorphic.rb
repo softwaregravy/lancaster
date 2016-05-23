@@ -5,12 +5,7 @@ class MakeSubscriptionPolymorphic < ActiveRecord::Migration
     remove_index :subscriptions, [:user_id, :feed_id]
     rename_column :subscriptions, :feed_id, :subscribable_id
     add_column :subscriptions, :subscribable_type, :string
-    Subscription.find_each do |s|
-      s.subscribable_type = Feed.to_s
-      s.save!
-    end
-    add_index :subscriptions, [:user_id, :subscribable_id, :subscribable_type], :unique => true, :name => "unique_user_subscriptions"
-    change_column :subscriptions, :subscribable_type, :string, null: false
+    Subscription.update_all(subscribable_type: Feed.to_s)
   end
 
   def down
