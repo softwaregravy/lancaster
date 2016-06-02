@@ -8,10 +8,13 @@ class SubscriptionsController < ApplicationController
   def new
     if current_user.admin?
       @current_feeds = []
+      @current_web_pages = []
     else
-      @current_feeds = current_user.subscriptions.pluck(:subscribable_id)
+      @current_feeds = current_user.subscriptions.where(subscribable_type: "Feed").pluck(:subscribable_id)
+      @current_web_pages = current_user.subscriptions.where(subscribable_type: "WebPage").pluck(:subscribable_id)
     end
     @feeds = Feed.accessible_by(current_ability)
+    @web_pages = WebPage.accessible_by(current_ability)
   end
 
   def create

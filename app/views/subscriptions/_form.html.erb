@@ -18,11 +18,41 @@
     </div>
   <% else %>
     <%= f.hidden_field(:user_id, value: current_user.id) %>
-    <%= f.hidden_field(:subscribable_type, value: "Feed") %>
-    <%= f.hidden_field(:notification_preference, value: "sms") %>
   <% end %>
-  <%= f.collection_select :subscribable_id, @feeds, :id, :display_name, {include_blank: true, disabled: lambda{|feed| @current_feeds.include? feed.id}} %>
+
+  <select id='subscription_type'>
+    <option value="0">Subscribe to Feed</option>
+    <option value="1">Subscribe to Web Page</option>
+  </select>
+
+  <div id="feeds">
+    <%= f.hidden_field(:subscribable_type, value: "Feed") %>
+    <%= f.collection_select :subscribable_id, @feeds, :id, :display_name, {include_blank: true, disabled: lambda{|feed| @current_feeds.include? feed.id}} %>
+  </div>
+  <div id="web_pages" style="display: none;">
+    <%= f.hidden_field(:subscribable_type, value: "WebPage") %>
+    <%= f.collection_select :subscribable_id, @web_pages, :id, :display_name, {include_blank: true, disabled: lambda{|web_page| @current_web_pages.include? web_page.id}} %>
+  </div>
+
+  <%= f.hidden_field(:notification_preference, value: "sms") %>
   <div class="actions">
     <%= f.submit %>
   </div>
+<% end %>
+
+<%= javascript_tag do %>
+  $(document).ready(function(){
+    $('#subscription_type').on('change', function() {
+      if ( this.value == '0')
+      {
+        $("#feeds").show();
+        $("#web_pages").hide();
+      }
+      else
+      {
+        $("#feeds").hide();
+        $("#web_pages").show();
+      }
+   });
+  });
 <% end %>
