@@ -20,7 +20,7 @@ RSpec.describe SmsMessageAttempt, type: :model do
     attempt = create :sms_message_attempt
     attempt.sms_message.should be_valid
     attempt.sms_message.user.should be_valid
-    attempt.sms_message.post.should be_valid
+    attempt.sms_message.notification.should be_valid
   end
 
   describe "#set_defaults" do 
@@ -30,9 +30,6 @@ RSpec.describe SmsMessageAttempt, type: :model do
     end 
     it "should pull the to_number from the user" do 
       subject.to_number.should == subject.sms_message.user.phone_number
-    end
-    it "should use the default body" do 
-      subject.body.should be_include(subject.sms_message.post.url)
     end
   end
 

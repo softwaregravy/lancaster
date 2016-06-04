@@ -2,20 +2,20 @@
 #
 # Table name: sms_messages
 #
-#  id             :integer          not null, primary key
-#  send_initiated :datetime
-#  send_completed :datetime
-#  retry_enabled  :boolean          default("true"), not null
-#  max_attempts   :integer          default("1"), not null
-#  user_id        :integer          not null
-#  post_id        :integer          not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id              :integer          not null, primary key
+#  send_initiated  :datetime
+#  send_completed  :datetime
+#  retry_enabled   :boolean          default("true"), not null
+#  max_attempts    :integer          default("1"), not null
+#  user_id         :integer          not null
+#  notification_id :integer          not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
 class SmsMessage < ActiveRecord::Base
   belongs_to :user
-  belongs_to :post
+  belongs_to :notification
   has_many :sms_message_attempts
 
   # watch out, send is keyword in ruby :)

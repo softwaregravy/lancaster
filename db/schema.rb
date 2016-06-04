@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512184416) do
+ActiveRecord::Schema.define(version: 20160520010441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,18 @@ ActiveRecord::Schema.define(version: 20160512184416) do
 
   add_index "feeds", ["name"], name: "index_feeds_on_name", unique: true, using: :btree
   add_index "feeds", ["url"], name: "index_feeds_on_url", unique: true, using: :btree
+
+  create_table "notifications", force: :cascade do |t|
+    t.string   "subject"
+    t.string   "body"
+    t.string   "short_message"
+    t.integer  "notification_source_id"
+    t.string   "notification_source_type"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "notifications", ["notification_source_type", "notification_source_id"], name: "index_notifications_notifications_source", using: :btree
 
   create_table "posts", force: :cascade do |t|
     t.string   "title",      null: false
@@ -81,26 +93,27 @@ ActiveRecord::Schema.define(version: 20160512184416) do
   create_table "sms_messages", force: :cascade do |t|
     t.datetime "send_initiated"
     t.datetime "send_completed"
-    t.boolean  "retry_enabled",  default: true, null: false
-    t.integer  "max_attempts",   default: 1,    null: false
-    t.integer  "user_id",                       null: false
-    t.integer  "post_id",                       null: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.boolean  "retry_enabled",   default: true, null: false
+    t.integer  "max_attempts",    default: 1,    null: false
+    t.integer  "user_id",                        null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "notification_id"
   end
 
-  add_index "sms_messages", ["post_id"], name: "index_sms_messages_on_post_id", using: :btree
   add_index "sms_messages", ["user_id"], name: "index_sms_messages_on_user_id", using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
-    t.integer  "user_id",    null: false
-    t.integer  "feed_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "user_id",                 null: false
+    t.integer  "subscribable_id",         null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "subscribable_type",       null: false
+    t.string   "notification_preference", null: false
   end
 
-  add_index "subscriptions", ["feed_id"], name: "index_subscriptions_on_feed_id", using: :btree
-  add_index "subscriptions", ["user_id", "feed_id"], name: "index_subscriptions_on_user_id_and_feed_id", unique: true, using: :btree
+  add_index "subscriptions", ["subscribable_id"], name: "index_subscriptions_on_subscribable_id", using: :btree
+  add_index "subscriptions", ["user_id", "subscribable_id", "subscribable_type"], name: "unique_user_subscriptions", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "phone_number"
@@ -127,8 +140,26 @@ ActiveRecord::Schema.define(version: 20160512184416) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "web_page_visits", force: :cascade do |t|
+    t.integer  "web_page_id"
+    t.string   "checksum"
+    t.integer  "size"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "web_page_visits", ["web_page_id"], name: "index_web_page_visits_on_web_page_id", using: :btree
+
+  create_table "web_pages", force: :cascade do |t|
+    t.string   "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "web_pages", ["url"], name: "index_web_pages_on_url", unique: true, using: :btree
+
   add_foreign_key "posts", "feeds"
   add_foreign_key "sms_message_attempts", "sms_messages"
-  add_foreign_key "sms_messages", "posts"
   add_foreign_key "sms_messages", "users"
+  add_foreign_key "web_page_visits", "web_pages"
 end

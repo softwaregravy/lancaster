@@ -29,6 +29,7 @@ FactoryGirl.define do
     password "password"
     password_confirmation "password"
     confirmed_at Date.today
+    notifications_enabled true
     # don't use phone_number -- it has extensions
     phone_number { Faker::PhoneNumber.cell_phone }
     factory :admin do 

@@ -2,15 +2,15 @@
 #
 # Table name: sms_messages
 #
-#  id             :integer          not null, primary key
-#  send_initiated :datetime
-#  send_completed :datetime
-#  retry_enabled  :boolean          default("true"), not null
-#  max_attempts   :integer          default("1"), not null
-#  user_id        :integer          not null
-#  post_id        :integer          not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id              :integer          not null, primary key
+#  send_initiated  :datetime
+#  send_completed  :datetime
+#  retry_enabled   :boolean          default("true"), not null
+#  max_attempts    :integer          default("1"), not null
+#  user_id         :integer          not null
+#  notification_id :integer          not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
 FactoryGirl.define do
@@ -20,6 +20,6 @@ FactoryGirl.define do
     retry_enabled true
     max_attempts 1
     user 
-    post
+    notification
   end
 end

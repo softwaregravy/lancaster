@@ -3,7 +3,7 @@
 # Table name: feeds
 #
 #  id         :integer          not null, primary key
-#  name       :string           not null
+#  name       :string
 #  url        :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -30,81 +30,69 @@ RSpec.describe Feed, type: :model do
     end
   end
 
-    describe "#verify_feed" do 
-      it "sets the feed title" do 
-        feed = create :feed
-        feed.verify_feed
-        feed.title.should == "YYZ Deals :: Toronto Flight Deals and All Inclusive Specials"
+  describe "#verify_feed" do 
+    it "sets the feed title" do 
+      feed = create :feed
+      feed.verify_feed
+      feed.title.should == "YYZ Deals :: Toronto Flight Deals and All Inclusive Specials"
+    end
+    it "verifies feed on create" do 
+      expect_any_instance_of(Feed).to receive(:verify_feed)
+      create(:feed)
+    end
+    it "verfieis feed if url changes" do 
+      feed = create(:feed)
+      expect(feed).to receive(:verify_feed)
+      feed.url = "https://www.facebook.com"
+      feed.save
+    end
+    it "does not verify feed if the url does not change" do 
+      feed = create(:feed)
+      expect(feed).not_to receive(:verify_feed)
+      feed.name = "Facebook"
+      feed.save
+    end
+    context "when no title is found" do 
+      before :each do 
+        remove_request_stub(@feed_stub)
+        feed_data_no_title = File.read(Rails.root.join('spec', 'fixtures', 'yyz_deals_feed_no_title.xml'))
+        feed_url = "http://example.com/yyy_deals"
+        stub_request(:any, feed_url).to_return(body: feed_data_no_title)
       end
-      it "verifies feed on create" do 
-        expect_any_instance_of(Feed).to receive(:verify_feed)
-        create(:feed)
-      end
-      it "verfieis feed if url changes" do 
+      it "falls back to the domain" do 
         feed = create(:feed)
-        expect(feed).to receive(:verify_feed)
-        feed.url = "https://www.facebook.com"
-        feed.save
-      end
-      it "does not verify feed if the url does not change" do 
-        feed = create(:feed)
-        expect(feed).not_to receive(:verify_feed)
-        feed.name = "Facebook"
-        feed.save
-      end
-      context "when no title is found" do 
-        before do 
-          remove_request_stub(@feed_stub)
-          feed_data_no_title = File.read(Rails.root.join('spec', 'fixtures', 'yyz_deals_feed_no_title.xml'))
-          feed_url = "http://example.com/yyy_deals"
-          stub_request(:any, feed_url).to_return(body: feed_data_no_title)
-        end
-        it "falls back to the domain" do 
-          feed = create(:feed)
-          feed.title.should == "example.com"
-        end
+        feed.title.should == "example.com"
       end
     end
-  describe "getting feed data" do 
-    describe "#latest_title_and_link" do 
-      it "should return latest title and link" do 
-        feed = create(:feed, url: @feed_url)
-        feed.latest_title_and_link.should == [
-          "Toronto to Osaka / Kyoto, Japan - $565 CAD roundtrip including taxes",
-          "http://yyzdeals.com/toronto-to-osaka-kyoto-japan-565-cad-roundtrip-including-taxes"
-        ]
-      end
+  end
+  describe "#fetch_latest_post" do 
+    it "returns the post" do 
+      feed = create(:feed, url: @feed_url)
+      feed.fetch_latest_post.should be_a(Post)
     end
-    describe "#fetch_latest_post" do 
-      it "should return the post" do 
-        feed = create(:feed, url: @feed_url)
+    it "save the post to the database" do 
+      feed = create(:feed, url: @feed_url)
+      expect {
         feed.fetch_latest_post.should be_a(Post)
-      end
-      it "should save the post to the database" do 
-        feed = create(:feed, url: @feed_url)
-        expect {
-          feed.fetch_latest_post.should be_a(Post)
-        }.to change(Post, :count).by(1)
-      end
-      it "should have the correct data" do 
-        feed = create(:feed, url: @feed_url)
-        post = feed.fetch_latest_post
-        post.title.should == "Toronto to Osaka / Kyoto, Japan - $565 CAD roundtrip including taxes"
-        post.url.should == "http://yyzdeals.com/toronto-to-osaka-kyoto-japan-565-cad-roundtrip-including-taxes"
-      end
-      it "should not create duplicates" do 
-        feed = create(:feed, url: @feed_url)
-        feed.fetch_latest_post.should be_a(Post)
-        expect {
-          feed.fetch_latest_post.should be_a(Post)
-        }.to_not change(Post, :count)
-      end
-      it "should notify subscribers" do 
-        feed = create(:feed, url: @feed_url)
-        expect(PrepareNotificationsWorker).to receive(:perform_async)
-        feed.fetch_latest_post(true)
-      end
+      }.to change(Post, :count).by(1)
     end
-
+    it "has the correct data" do 
+      feed = create(:feed, url: @feed_url)
+      post = feed.fetch_latest_post
+      post.title.should == "Toronto to Osaka / Kyoto, Japan - $565 CAD roundtrip including taxes"
+      post.url.should == "http://yyzdeals.com/toronto-to-osaka-kyoto-japan-565-cad-roundtrip-including-taxes"
+    end
+    it "returns nothing if already exists" do 
+      feed = create(:feed, url: @feed_url)
+      feed.fetch_latest_post.should be_a(Post)
+      feed.fetch_latest_post.should == nil
+    end
+    it "does not create duplicates" do 
+      feed = create(:feed, url: @feed_url)
+      feed.fetch_latest_post.should be_a(Post)
+      expect {
+        feed.fetch_latest_post
+      }.to_not change(Post, :count)
+    end
   end
 end

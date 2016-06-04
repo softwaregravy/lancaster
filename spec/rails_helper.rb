@@ -53,3 +53,11 @@ end
 # Doing this last
 # https://github.com/rails/spring/issues/209
 require 'shoulda-matchers'
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+

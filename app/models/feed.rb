@@ -3,7 +3,7 @@
 # Table name: feeds
 #
 #  id         :integer          not null, primary key
-#  name       :string           not null
+#  name       :string
 #  url        :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -11,7 +11,7 @@
 #
 
 class Feed < ActiveRecord::Base
-  has_many :subscriptions
+  has_many :subscriptions, as: :subscribable
   has_many :posts
 
   validates :url, uri: true, presence: true
@@ -21,19 +21,29 @@ class Feed < ActiveRecord::Base
     name || title
   end
 
-  def fetch_latest_post(send_updates = false)
+  def fetch_latest_post
     post = latest_post
-    #TODO critical path here for threadsafety. can I lock it?
-    #mitigate: locked in the db, so I guess first one through wins
-    my_post = posts.find_or_initialize_by(title: post.title, url: post.url) 
-    if my_post.new_record? && send_updates
-      my_post.save!
-      PrepareNotificationsWorker.perform_async(my_post.id) 
+    my_post = posts.find_by(title: post.title, url: post.url) 
+    if my_post.nil?
+      #TODO critical path here for threadsafety. can I lock it?
+      #for now, this will just be nil, which satisfies the api
+      posts.create(title: post.title, url: post.url) 
     else
-      my_post.save!
+      nil # only return if new
     end
-    my_post
   end
+
+  def verify_feed
+    if url.present?
+      feedjira = fetch_and_parse
+      self.title = feedjira.title
+      unless title.present?
+        self.title = Addressable::URI.parse(url).host
+      end
+    end
+  end
+
+  protected
 
   def fetch_and_parse
     Rails.cache.fetch('feed', expires_in: 900) do 
@@ -50,14 +60,5 @@ class Feed < ActiveRecord::Base
     [post.title, post.url]
   end
 
-  def verify_feed
-    if url.present?
-      feedjira = fetch_and_parse
-      self.title = feedjira.title
-      unless title.present?
-        self.title = Addressable::URI.parse(url).host
-      end
-    end
-  end
 end
 

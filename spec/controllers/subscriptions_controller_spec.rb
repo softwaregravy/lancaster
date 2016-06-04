@@ -8,7 +8,7 @@ RSpec.describe SubscriptionsController, type: :controller do
     sign_in @user
   end
 
-  let(:valid_attributes) { attributes_for(:subscription, user_id: @user.id, feed_id: @feed.id) }
+  let(:valid_attributes) { attributes_for(:subscription, user_id: @user.id, subscribable_id: @feed.id, subscribable_type: "Feed", notification_preference: "sms") }
 
   let(:invalid_attributes) { {user_id: @user.id, feed_id: -1} }
 
@@ -37,7 +37,7 @@ RSpec.describe SubscriptionsController, type: :controller do
       end
       it "remembers no feeds" do 
         # and thus allows admins to assign any feed to any user
-        create(:subscription, user: @admin, feed: @feed)
+        create(:subscription, user: @admin, subscribable: @feed)
         get :new
         expect(assigns(:current_feeds)).to eq([])
       end

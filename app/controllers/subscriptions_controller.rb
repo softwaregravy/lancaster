@@ -8,10 +8,13 @@ class SubscriptionsController < ApplicationController
   def new
     if current_user.admin?
       @current_feeds = []
+      @current_web_pages = []
     else
-      @current_feeds = current_user.subscriptions.pluck(:feed_id)
+      @current_feeds = current_user.subscriptions.where(subscribable_type: "Feed").pluck(:subscribable_id)
+      @current_web_pages = current_user.subscriptions.where(subscribable_type: "WebPage").pluck(:subscribable_id)
     end
     @feeds = Feed.accessible_by(current_ability)
+    @web_pages = WebPage.accessible_by(current_ability)
   end
 
   def create
@@ -37,6 +40,6 @@ class SubscriptionsController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def subscription_params
-      params.require(:subscription).permit(:user_id, :feed_id)
+      params.require(:subscription).permit(:user_id, :subscribable_id, :subscribable_type, :notification_preference)
     end
 end

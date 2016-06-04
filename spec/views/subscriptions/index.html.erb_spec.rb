@@ -13,6 +13,6 @@ RSpec.describe "subscriptions/index", type: :view do
   it "renders a list of subscriptions" do
     render
     assert_select "tr>td", :text => @s1.user.email
-    assert_select "tr>td", :text => @s1.feed.name
+    assert_select "tr>td", :text => @s1.subscribable.display_name
   end
 end
