@@ -103,7 +103,7 @@ GEM
       faraday_middleware (~> 0.9)
       loofah (~> 2.0)
       sax-machine (~> 1.0)
-    ffi (1.9.10)
+    ffi (1.15.1)
     formatador (0.2.5)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
