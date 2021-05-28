@@ -25,7 +25,7 @@ gem 'rack-timeout'
 
 # authentication & authorization
 gem 'devise'
-gem 'cancancan', '~> 1.10'
+gem 'cancancan', '~> 3.2'
 
 # Twilio :)
 gem 'twilio-ruby', '~> 4.11.1'
